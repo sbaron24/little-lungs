@@ -1,5 +1,5 @@
 const ParkSearchBar = () => {
-  return <div>Park Search Bar (goes here SOME CHANGE GOES HERE)</div>;
+  return <div>Park Search Bar</div>;
 };
 
 export default ParkSearchBar;
