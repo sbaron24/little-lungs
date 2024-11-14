@@ -1,8 +1,6 @@
-"use client";
+import { useState, useEffect } from "react";
 
-import React, { useState, useEffect } from "react";
-
-const CurrentPosition = () => {
+const useCurrentLocation = () => {
   const [location, setLocation] = useState({
     latitude: null,
     longitude: null,
@@ -25,12 +23,8 @@ const CurrentPosition = () => {
       console.error("Geolocation is not supported by this browser.");
     }
   }, []);
-  return (
-    <div>
-      <p>Current user latitude: {location.latitude}</p>
-      <p>Current user longitude: {location.longitude}</p>
-    </div>
-  );
+
+  return location;
 };
 
-export default CurrentPosition;
+export default useCurrentLocation;

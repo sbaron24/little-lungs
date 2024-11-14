@@ -31,7 +31,7 @@ const ParkInfo = ({ park }) => {
         </h2>
         <p className="text-sm">
           <span>
-            <span class="font-medium">Primary </span>
+            <span className="font-medium">Primary </span>
             {"PM2.5"}
           </span>
         </p>
