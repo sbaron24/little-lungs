@@ -1,7 +1,7 @@
 // Using fetch (built-in, modern approach):
 export async function googleAqiRequest(currentLatitude, currentLongitude) {
   const url = "https://airquality.googleapis.com/v1/currentConditions:lookup";
-  const apiKey = "AIzaSyBCFeMZ30ZJgnjPYQo4xYIS-Dn47siSNQ0";
+  const apiKey = "";
   const queryUrl = `${url}?key=${apiKey}`;
 
   const data = {
