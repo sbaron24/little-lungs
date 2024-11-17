@@ -19,18 +19,15 @@ const ParkInfo = ({ park }) => {
   const [airTempSixHours, setAirTempSixHours] = useState(null);
 
   useEffect(() => {
-    if (!aqiForecasts.current) {
-      postGoogleAqiForecast(latitude, longitude, 6).then((response) => {
-        console.log("response", response);
-        setAqiForecasts({
-          current: response.hourlyForecasts[0].indexes[0].aqi,
-          twoHours: response.hourlyForecasts[2].indexes[0].aqi,
-          fourHours: response.hourlyForecasts[4].indexes[0].aqi,
-          sixHours: response.hourlyForecasts[6].indexes[0].aqi,
-        });
+    postGoogleAqiForecast(latitude, longitude, 6).then((response) => {
+      setAqiForecasts({
+        current: response.hourlyForecasts[0].indexes[0].aqi,
+        twoHours: response.hourlyForecasts[2].indexes[0].aqi,
+        fourHours: response.hourlyForecasts[4].indexes[0].aqi,
+        sixHours: response.hourlyForecasts[6].indexes[0].aqi,
       });
-    }
-  }, []);
+    });
+  }, [latitude, longitude]);
 
   const Loading = () => {
     return <span className="text-xs">Loading...</span>;

@@ -15,7 +15,10 @@ export default function Home() {
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start w-full">
         <div className="flex w-full gap-8">
           <div className="w-1/3 border border-dotted rounded">
-            <ParkSearchBar parksData={parksData} />
+            <ParkSearchBar
+              parksData={parksData}
+              handleParkSelect={(park) => setSelectedPark(park)}
+            />
           </div>
           <div className="w-2/3 p-8">
             <ParkInfo park={selectedPark} />

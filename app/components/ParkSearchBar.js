@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 
-const ParkSearchBar = ({ parksData }) => {
+const ParkSearchBar = ({ parksData, handleParkSelect }) => {
   const [searchResults, setParkSearchResults] = useState(parksData);
 
   const handleSearch = (e) => {
@@ -13,7 +13,13 @@ const ParkSearchBar = ({ parksData }) => {
   const ParkCard = ({ park }) => {
     const { name } = park;
     return (
-      <div className="w-full p-4 border-b-2 border-gray-200">
+      <div
+        onClick={(e) => {
+          e.preventDefault()
+          handleParkSelect(park);
+        }}
+        className="w-full p-4 border-b-2 border-gray-200"
+      >
         <h2 className="text-xl">{name}</h2>
       </div>
     );
