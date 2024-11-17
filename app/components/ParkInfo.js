@@ -1,21 +1,40 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { googleAqiRequest } from "../lib/api";
+import { postGoogleAqiForecast } from "../lib/api";
 
 const ParkInfo = ({ park }) => {
-  console.log("ParkInfo", park);
   const { name, latitude, longitude, aqiParam, airTempParam } = park;
-  const [aqi, setAqi] = useState(aqiParam ?? null);
+  const [aqiForecasts, setAqiForecasts] = useState(
+    aqiParam ?? {
+      current: null,
+      twoHours: null,
+      fourHours: null,
+      sixHours: null,
+    }
+  );
   const [airTemp, setAirTemp] = useState(airTempParam ?? null);
+  const [airTempTwoHours, setAirTempTwoHours] = useState(null);
+  const [airTempFourHours, setAirTempFourHours] = useState(null);
+  const [airTempSixHours, setAirTempSixHours] = useState(null);
 
-  //   useEffect(() => {
-  //     if (!aqi) {
-  //       googleAqiRequest(latitude, longitude).then((response) => {
-  //         setAqi(response.indexes[0].aqi);
-  //       });
-  //     }
-  //   });
+  useEffect(() => {
+    if (!aqiForecasts.current) {
+      postGoogleAqiForecast(latitude, longitude, 6).then((response) => {
+        console.log("response", response);
+        setAqiForecasts({
+          current: response.hourlyForecasts[0].indexes[0].aqi,
+          twoHours: response.hourlyForecasts[2].indexes[0].aqi,
+          fourHours: response.hourlyForecasts[4].indexes[0].aqi,
+          sixHours: response.hourlyForecasts[6].indexes[0].aqi,
+        });
+      });
+    }
+  }, []);
+
+  const Loading = () => {
+    return <span className="text-xs">Loading...</span>;
+  };
 
   return (
     <div>
@@ -26,28 +45,37 @@ const ParkInfo = ({ park }) => {
       </div>
       <hr className="mb-4 mt-4" />
       <div>
-        <h2 className="text-3xl">
-          AQI <span className="text-green-500">{aqi ?? 72}</span>
-        </h2>
-        <p className="text-sm">
-          <span>
-            <span className="font-medium">Primary </span>
-            {"PM2.5"}
-          </span>
-        </p>
-        <br />
-        <p className="text-sm">
-          {" The air near this park is clean and safe for children"}
-        </p>
-
-        <hr className="mb-4 mt-4" />
-        <h2 className="text-3xl">
-          Air Temp{" "}
-          <span className="text-orange-500">
-            {airTemp ?? 25}
-            <span className="text-orange-500 text-sm">&#8451;</span>
-          </span>
-        </h2>
+        <div>
+          <h2 className="text-3xl">
+            <table className="w-full text-center">
+              <thead>
+                <tr>
+                  <th className="w-1/12"></th>
+                  <th>Now</th>
+                  <th>2 hours</th>
+                  <th>4 hours</th>
+                  <th>6 hours</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td className="text-right">AQI</td>
+                  <td>{aqiForecasts.current ?? <Loading />}</td>
+                  <td>{aqiForecasts.twoHours ?? <Loading />}</td>
+                  <td>{aqiForecasts.fourHours ?? <Loading />}</td>
+                  <td>{aqiForecasts.sixHours ?? <Loading />}</td>
+                </tr>
+                <tr>
+                  <td className="text-right">Temp</td>
+                  <td>{airTemp ?? 72}</td>
+                  <td>{airTempTwoHours ?? 72}</td>
+                  <td>{airTempFourHours ?? 72}</td>
+                  <td>{airTempSixHours ?? 72}</td>
+                </tr>
+              </tbody>
+            </table>
+          </h2>
+        </div>
         <br />
         <p className="text-sm">{" Hydrate often"}</p>
       </div>

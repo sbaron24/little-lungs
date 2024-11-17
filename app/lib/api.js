@@ -1,13 +1,32 @@
-// Using fetch (built-in, modern approach):
-export async function googleAqiRequest(currentLatitude, currentLongitude) {
-  const url = "https://airquality.googleapis.com/v1/currentConditions:lookup";
-  const apiKey = "AIzaSyBCFeMZ30ZJgnjPYQo4xYIS-Dn47siSNQ0";
+import { nearestHourWarsawTime, getHoursAheadTime } from "./utilities";
+/**
+ * Posts the air quality forecast to the Google Air Quality API.o *
+ * @param {number} latitude - The latitude of the location.
+ * @param {number} longitude - The longitude of the location.
+ * @param {number} forecastHoursAhead - The number of hours ahead for the forecast.
+ * @returns {Promise<Object>} The air quality forecast.
+ * @throws Will throw an error if the fetch operation fails.
+ */
+export async function postGoogleAqiForecast(
+  latitude,
+  longitude,
+  forecastHoursAhead
+) {
+  const url = "https://airquality.googleapis.com/v1/forecast:lookup";
+
+  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
   const queryUrl = `${url}?key=${apiKey}`;
+  const startTime = nearestHourWarsawTime();
+  const endTime = getHoursAheadTime(startTime, forecastHoursAhead);
 
   const data = {
     location: {
-      latitude: currentLatitude,
-      longitude: currentLongitude,
+      latitude,
+      longitude,
+    },
+    period: {
+      startTime,
+      endTime,
     },
   };
 
