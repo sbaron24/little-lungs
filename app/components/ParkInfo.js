@@ -1,36 +1,34 @@
 "use client";
 
 import React, { useEffect, useState } from "react";
-import { postGoogleAqiForecast } from "../lib/api";
+import { getAllConditionData } from "../lib/api";
+import ConditionCard from "./ConditionCard";
 
 const ParkInfo = ({ park }) => {
   const { name, latitude, longitude, aqiParam, airTempParam } = park;
-  const [aqiForecasts, setAqiForecasts] = useState(
-    aqiParam ?? {
-      current: null,
-      twoHours: null,
-      fourHours: null,
-      sixHours: null,
-    }
-  );
-  const [airTemp, setAirTemp] = useState(airTempParam ?? null);
-  const [airTempTwoHours, setAirTempTwoHours] = useState(null);
-  const [airTempFourHours, setAirTempFourHours] = useState(null);
-  const [airTempSixHours, setAirTempSixHours] = useState(null);
+  const [conditionData, setConditionData] = useState([]);
+  const [selectedCondition, setSelectedCondition] = useState("");
+  const handleClick = (condition) => {
+    setSelectedCondition(condition);
+  };
 
   useEffect(() => {
-    postGoogleAqiForecast(latitude, longitude, 6).then((response) => {
-      setAqiForecasts({
-        current: response.hourlyForecasts[0].indexes[0].aqi,
-        twoHours: response.hourlyForecasts[2].indexes[0].aqi,
-        fourHours: response.hourlyForecasts[4].indexes[0].aqi,
-        sixHours: response.hourlyForecasts[6].indexes[0].aqi,
-      });
+    getAllConditionData(latitude, longitude).then((response) => {
+      setConditionData(response);
     });
   }, [latitude, longitude]);
 
+  let conditionCards = conditionData.map((condition) => (
+    <ConditionCard
+      key={condition.dateTime}
+      condition={condition}
+      isSelected={condition.dateTime == selectedCondition.dateTime}
+      handleClick={() => handleClick(condition)}
+    />
+  ));
+
   const Loading = () => {
-    return <span className="text-xs">Loading...</span>;
+    return <span className="text-sm">Loading...</span>;
   };
 
   return (
@@ -42,39 +40,16 @@ const ParkInfo = ({ park }) => {
       </div>
       <hr className="mb-4 mt-4" />
       <div>
-        <div>
-          <h2 className="text-3xl">
-            <table className="w-full text-center">
-              <thead>
-                <tr>
-                  <th className="w-1/12"></th>
-                  <th>Now</th>
-                  <th>2 hours</th>
-                  <th>4 hours</th>
-                  <th>6 hours</th>
-                </tr>
-              </thead>
-              <tbody>
-                <tr>
-                  <td className="text-right">AQI</td>
-                  <td>{aqiForecasts.current ?? <Loading />}</td>
-                  <td>{aqiForecasts.twoHours ?? <Loading />}</td>
-                  <td>{aqiForecasts.fourHours ?? <Loading />}</td>
-                  <td>{aqiForecasts.sixHours ?? <Loading />}</td>
-                </tr>
-                <tr>
-                  <td className="text-right">Temp</td>
-                  <td>{airTemp ?? 72}</td>
-                  <td>{airTempTwoHours ?? 72}</td>
-                  <td>{airTempFourHours ?? 72}</td>
-                  <td>{airTempSixHours ?? 72}</td>
-                </tr>
-              </tbody>
-            </table>
-          </h2>
+        <div className="flex flex-row space-x-5">
+          {conditionCards.length == 0 ? <Loading /> : conditionCards}
         </div>
         <br />
-        <p className="text-sm">{" Hydrate often"}</p>
+        <div>
+          <h2 className="font-medium">Health recommendations</h2>
+          {selectedCondition?.aqiHealth
+            ? selectedCondition.aqiHealth.children
+            : null}
+        </div>
       </div>
     </div>
   );
