@@ -63,9 +63,7 @@ export function getAqiInfo(code, concentration) {
     });
 
     return result;
-  } catch ({ name, message }) {
-    console.error(message);
-  }
+  } catch {}
 }
 
 /**

@@ -3,17 +3,20 @@
 import React, { useEffect, useState } from "react";
 import { getAllConditionData } from "../lib/api";
 import ConditionCard from "./ConditionCard";
-import ParkRecommendations from "./ParkRecommendations";
+import GeneralRecommendation from "./GeneralRecommendation";
 
 const ParkInfo = ({ park }) => {
   const { name, latitude, longitude } = park;
   const [conditionData, setConditionData] = useState([]);
   const [selectedCondition, setSelectedCondition] = useState("");
+  // const [selectedAge, setSelectedAge] = useState(null);
+
   const handleClick = (condition) => {
     setSelectedCondition(condition);
   };
 
   useEffect(() => {
+    // Nice to have -- setLoading while new park loads
     getAllConditionData(latitude, longitude).then((response) => {
       setConditionData(response);
     });
@@ -27,41 +30,6 @@ const ParkInfo = ({ park }) => {
       handleClick={() => handleClick(condition)}
     />
   ));
-
-  const GeneralRecommendation = ({ condition }) => {
-    return (
-      <div>
-        {condition ? (
-          <div>
-            <strong>
-              <span className={`text-[${condition.dominantPollutant.hex}]`}>
-                {condition.dominantPollutant.description}{" "}
-              </span>
-            </strong>
-            <span>{condition.dominantPollutant.message}</span>
-            <div>
-              {condition.pollutantLevels.map((pollutant) => {
-                return (
-                  <span key={`${pollutant?.code}`}>
-                    <strong>
-                      <span
-                        className={`text-[${pollutant?.hex}]`}
-                      >{`${pollutant?.code.toUpperCase()} `}</span>
-                    </strong>
-                    <span>
-                      <strong>{pollutant?.concentration.toFixed(2)} </strong>
-                    </span>
-                  </span>
-                );
-              })}
-            </div>
-          </div>
-        ) : (
-          <p>Select a condition</p>
-        )}
-      </div>
-    );
-  };
 
   const Loading = () => {
     return <span className="text-sm">Loading...</span>;
@@ -86,7 +54,10 @@ const ParkInfo = ({ park }) => {
           )}
         </div>
       </div>
-      {/* <ParkRecommendations park={park} /> */}
+      {/* <AgeRecommendation
+        selectedAge={selectedAge}
+        dominantPollutant={selectedCondition}
+      /> */}
     </div>
   );
 };

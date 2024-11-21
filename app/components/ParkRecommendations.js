@@ -46,7 +46,7 @@ const ParkRecommendations = ({ park }) => {
         }}
       >
         {airQualityData.map((park, index) => (
-          <div>
+          <div key={park.key}>
             {/* Park Title*/}
             <h3 style={{ textAlign: "left" }}> {park.name} </h3>
 
