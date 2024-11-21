@@ -1,3 +1,5 @@
+"use client";
+
 const GeneralRecommendation = ({ condition }) => {
   return (
     <div>
@@ -15,7 +17,7 @@ const GeneralRecommendation = ({ condition }) => {
                 <span key={`${pollutant?.code}`}>
                   <strong>
                     <span
-                      className={`text-[${pollutant?.hex}]`}
+                      style={{ color: pollutant?.hex }}
                     >{`${pollutant?.code.toUpperCase()} `}</span>
                   </strong>
                   <span>
