@@ -120,10 +120,8 @@ export async function postOpenMeteoWeatherForecast(latitude, longitude) {
  */
 export async function getAllConditionData(latitude, longitude) {
   let openTempData = await postOpenMeteoWeatherForecast(latitude, longitude);
-  console.log("openTempData", openTempData);
   let googleAirData = await postGoogleAqiForecast(latitude, longitude, 5);
 
-  console.log("googleAirData", googleAirData);
   let conditions = [];
   let i = 0;
   for (i = 0; i < openTempData.dateTime.length; i++) {
