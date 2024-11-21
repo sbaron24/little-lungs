@@ -28,23 +28,37 @@ const ParkInfo = ({ park }) => {
     />
   ));
 
-  const GeneralRecommendation = ({}) => {
-    const aqiLevelInfo = {
-      description: "Very good",
-      hex: "#4cbb17",
-      message: "The air near this park is clean and safe for children",
-    };
-
+  const GeneralRecommendation = ({ condition }) => {
     return (
       <div>
-        <h2>General Recommendation</h2>
-        <p>
-          <strong>
-            <span className={`text-[${aqiLevelInfo.hex}]`}>
-              {aqiLevelInfo.description}
-            </span>
-          </strong>
-        </p>
+        {condition ? (
+          <div>
+            <strong>
+              <span className={`text-[${condition.dominantPollutant.hex}]`}>
+                {condition.dominantPollutant.description}{" "}
+              </span>
+            </strong>
+            <span>{condition.dominantPollutant.message}</span>
+            <div>
+              {condition.pollutantLevels.map((pollutant) => {
+                return (
+                  <span key={`${pollutant?.code}`}>
+                    <strong>
+                      <span
+                        className={`text-[${pollutant?.hex}]`}
+                      >{`${pollutant?.code.toUpperCase()} `}</span>
+                    </strong>
+                    <span>
+                      <strong>{pollutant?.concentration.toFixed(2)} </strong>
+                    </span>
+                  </span>
+                );
+              })}
+            </div>
+          </div>
+        ) : (
+          <p>Select a condition</p>
+        )}
       </div>
     );
   };
@@ -67,11 +81,9 @@ const ParkInfo = ({ park }) => {
         </div>
         <br />
         <div>
-          <GeneralRecommendation />
-          <h2 className="font-medium">Health recommendations</h2>
-          {selectedCondition?.aqiHealth
-            ? selectedCondition.aqiHealth.children
-            : null}
+          {conditionCards.length == 0 ? null : (
+            <GeneralRecommendation condition={selectedCondition} />
+          )}
         </div>
       </div>
       {/* <ParkRecommendations park={park} /> */}

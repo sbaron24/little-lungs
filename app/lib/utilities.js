@@ -49,8 +49,9 @@ export function getAqiInfo(code, concentration) {
     }
     AQI_POLLUTANT_RANGES[code].forEach((range, index) => {
       let [min, max] = range.split(",").map((m) => parseFloat(m));
+
       if (
-        (min === NaN && concentration >= max) ||
+        (isNaN(min) && concentration >= max) ||
         (concentration >= min && concentration <= max)
       ) {
         result = {
@@ -76,5 +77,6 @@ export function getPollutantLevels(apiPollutants) {
     .map((pollutant) => {
       return getAqiInfo(pollutant.code, pollutant.concentration.value);
     })
+    .filter(Boolean) // removes CO
     .sort((a, b) => b.index - a.index);
 }

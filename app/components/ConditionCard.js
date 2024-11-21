@@ -1,3 +1,5 @@
+"use client";
+
 import { convertUTCTimeStr } from "../lib/utilities";
 
 const ConditionCard = ({ condition, isSelected, handleClick }) => {

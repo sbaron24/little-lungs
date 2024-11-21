@@ -1,3 +1,5 @@
+"use client";
+
 import React, { useState } from "react";
 
 const ParkSearchBar = ({ parksData, handleParkSelect }) => {
@@ -15,7 +17,7 @@ const ParkSearchBar = ({ parksData, handleParkSelect }) => {
     return (
       <div
         onClick={(e) => {
-          e.preventDefault()
+          e.preventDefault();
           handleParkSelect(park);
         }}
         className="w-full p-4 border-b-2 border-gray-200"
