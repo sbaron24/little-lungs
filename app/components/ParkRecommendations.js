@@ -2,22 +2,27 @@
 
 import React, { useEffect, useState } from "react";
 import { postGoogleAqiForecast } from "../lib/api";
-import { parksData } from "../lib/data";
+import { parksData } from "../lib/data"; //added the location data to closest parks for easy access 
+import { closestParks } from "../lib/data";
 
-const ParkRecommendations = ({ park }) => {
+const ParkRecommendations = ({ selectedPark }) => {
   const [airQualityData, setAirQualityData] = useState([]);
 
   const getAirQualityForParks = async () => {
     const aqData = await Promise.all(
-      parksData.map(async (park) => {
+      closestParks[selectedPark].map(async (park) => {
         const data = await postGoogleAqiForecast(
           park.latitude,
           park.longitude,
           5
         );
+        const color = data.hourlyForecasts[0].indexes[0].color
+        const rgbColor = `rgb(${color.red}, ${color.green}, ${color.blue})`;
         return {
           name: park.name,
           airQuality: data.hourlyForecasts[0].indexes[0].aqi,
+          color: rgbColor,
+          distance: park.distance
         };
       })
     );
@@ -29,24 +34,26 @@ const ParkRecommendations = ({ park }) => {
   };
 
   useEffect(() => {
-    if (park) {
+    if (selectedPark) {
       getAirQualityForParks();
     }
-  }, [park]);
+  }, [selectedPark]);
 
+  
+    //todo: only show if AQ is better than current park 
   return (
     <div>
-      <h2> Safer Parks Nearby </h2>
-      <div
-        style={{
-          padding: "10px",
-          border: "1px solid #ddd",
-          borderRadius: "8px",
-          marginBottom: "10px",
-        }}
-      >
-        {airQualityData.map((park, index) => (
-          <div key={park.key}>
+      <h2> Safest Parks Nearby </h2>
+      <div>
+        {airQualityData.slice(0,3).map((park, index) => (
+          <div
+            style={{
+              padding: "10px",
+              border: "1px solid #ddd",
+              borderRadius: "8px",
+              marginBottom: "10px",
+            }}
+          >
             {/* Park Title*/}
             <h3 style={{ textAlign: "left" }}> {park.name} </h3>
 
@@ -60,13 +67,10 @@ const ParkRecommendations = ({ park }) => {
               }}
             >
               <li>
-                <strong>Distance:</strong> {"distance"} km away{" "}
+                <strong>Distance:</strong> {park.distance} km away{" "}
               </li>
               <li>
-                <strong>Air Quality:</strong> {park.airQuality}{" "}
-              </li>
-              <li>
-                <strong>Temperature:</strong> {"temperature"}{" "}
+                <strong>Air Quality:</strong> <span style ={{ color: park.rgbColor }}> {park.airQuality}{" "}</span>
               </li>
             </ul>
           </div>
