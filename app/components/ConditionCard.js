@@ -10,8 +10,7 @@ const ConditionCard = ({ condition, isSelected, handleClick }) => {
     >
       <div>
         <h3>{convertUTCTimeStr(condition.dateTime)}</h3>
-        <p>AQI: {condition.aqiData.aqi}</p>
-        <p>Temp: {Math.round(condition.tempC)}</p>
+        <p>{condition.dominantPollutant.description}</p>
       </div>
     </div>
   );

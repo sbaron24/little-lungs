@@ -3,9 +3,10 @@
 import React, { useEffect, useState } from "react";
 import { getAllConditionData } from "../lib/api";
 import ConditionCard from "./ConditionCard";
+import ParkRecommendations from "./ParkRecommendations";
 
 const ParkInfo = ({ park }) => {
-  const { name, latitude, longitude, aqiParam, airTempParam } = park;
+  const { name, latitude, longitude } = park;
   const [conditionData, setConditionData] = useState([]);
   const [selectedCondition, setSelectedCondition] = useState("");
   const handleClick = (condition) => {
@@ -14,6 +15,7 @@ const ParkInfo = ({ park }) => {
 
   useEffect(() => {
     getAllConditionData(latitude, longitude).then((response) => {
+      console.log("conditions: ", response);
       setConditionData(response);
     });
   }, [latitude, longitude]);
@@ -26,6 +28,27 @@ const ParkInfo = ({ park }) => {
       handleClick={() => handleClick(condition)}
     />
   ));
+
+  const GeneralRecommendation = ({}) => {
+    const aqiLevelInfo = {
+      description: "Very good",
+      hex: "#4cbb17",
+      message: "The air near this park is clean and safe for children",
+    };
+
+    return (
+      <div>
+        <h2>General Recommendation</h2>
+        <p>
+          <strong>
+            <span className={`text-[${aqiLevelInfo.hex}]`}>
+              {aqiLevelInfo.description}
+            </span>
+          </strong>
+        </p>
+      </div>
+    );
+  };
 
   const Loading = () => {
     return <span className="text-sm">Loading...</span>;
@@ -45,12 +68,14 @@ const ParkInfo = ({ park }) => {
         </div>
         <br />
         <div>
+          <GeneralRecommendation />
           <h2 className="font-medium">Health recommendations</h2>
           {selectedCondition?.aqiHealth
             ? selectedCondition.aqiHealth.children
             : null}
         </div>
       </div>
+      <ParkRecommendations park={park} />
     </div>
   );
 };

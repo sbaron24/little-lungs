@@ -1,5 +1,6 @@
 import { fetchWeatherApi } from "openmeteo";
 import moment from "moment-timezone";
+import { convertPPBtoMicrogramsVolume, getPollutantLevels } from "./utilities";
 /**
  * Posts the air quality forecast to the Google Air Quality API.o *
  * @param {number} latitude - The latitude of the location.
@@ -37,7 +38,6 @@ export async function postGoogleAqiForecast(
       "HEALTH_RECOMMENDATIONS",
       "DOMINANT_POLLUTANT_CONCENTRATION",
       "POLLUTANT_CONCENTRATION",
-      "LOCAL_AQI",
       "POLLUTANT_ADDITIONAL_INFO",
     ],
   };
@@ -79,7 +79,7 @@ export async function postOpenMeteoWeatherForecast(latitude, longitude) {
   const params = {
     latitude: latitude,
     longitude: longitude,
-    hourly: "temperature_2m",
+    hourly: ["temperature_2m", "surface_pressure"],
     forecast_hours: 8,
   };
   const url = "https://api.open-meteo.com/v1/forecast";
@@ -97,7 +97,7 @@ export async function postOpenMeteoWeatherForecast(latitude, longitude) {
 
   const hourly = response.hourly();
   let h = hourly.time();
-  h;
+
   // Note: The order of weather variables in the URL query and the indices below need to match!
   const weatherData = {
     dateTime: range(
@@ -106,6 +106,7 @@ export async function postOpenMeteoWeatherForecast(latitude, longitude) {
       hourly.interval()
     ).map((t) => moment.utc(new Date((t + utcOffsetSeconds) * 1000)).format()),
     temperature2m: hourly.variables(0)?.valuesArray() || [],
+    surfacePressure: hourly.variables(1).valuesArray(),
   };
 
   return weatherData;
@@ -113,30 +114,46 @@ export async function postOpenMeteoWeatherForecast(latitude, longitude) {
 
 /**
  * Fetches and combines air quality and temperature data from APIs by datetime for 6 hours ahead
- * @param {*} latitude
- * @param {*} longitude
+ * @param {number} latitude
+ * @param {number} longitude
  * @returns hashmap for dateTime, tempC, and air quality data
  */
 export async function getAllConditionData(latitude, longitude) {
   let openTempData = await postOpenMeteoWeatherForecast(latitude, longitude);
+  console.log("openTempData", openTempData);
   let googleAirData = await postGoogleAqiForecast(latitude, longitude, 5);
 
-  let result = [];
+  console.log("googleAirData", googleAirData);
+  let conditions = [];
   let i = 0;
   for (i = 0; i < openTempData.dateTime.length; i++) {
     const matchingAirData = googleAirData.hourlyForecasts.filter(
       (forecast) => forecast.dateTime == openTempData.dateTime[i]
     )[0];
-    let el = {
+
+    // No air data found for weather hour; move on to next hour
+    if (matchingAirData === undefined) {
+      continue;
+    }
+
+    // const convertedApiPollutants = convertPPBtoMicrogramsVolume(
+    //   matchingAirData?.pollutants,
+    //   openTempData.surfacePressure[i]
+    // );
+    // console.log("convertedApiPollutants", convertedApiPollutants);
+    const pollutantLevels = getPollutantLevels(matchingAirData?.pollutants);
+    let condition = {
       dateTime: openTempData.dateTime[i],
       tempC: openTempData.temperature2m[i],
-      aqiData: matchingAirData?.indexes[0],
-      aqiHealth: matchingAirData?.healthRecommendations,
+      aqiDataIndex: matchingAirData?.indexes[0],
+      pollutantLevels,
+      dominantPollutant: pollutantLevels[0],
     };
-    result.push(el);
+    conditions.push(condition);
   }
 
-  return result.filter(
-    (condition) => condition.aqiData && condition.dateTime && condition.tempC
+  return conditions.filter(
+    (condition) =>
+      condition.aqiDataIndex && condition.dateTime && condition.tempC
   );
 }

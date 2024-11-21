@@ -115,3 +115,48 @@ export const parksData = [
     longitude: 20.9595,
   },
 ];
+
+export const AQI_LEVEL_INFO = Object.freeze([
+  {
+    index: 1,
+    description: "Very good",
+    hex: "#4cbb17",
+    message: "The air near this park is clean and safe for children",
+  },
+  {
+    index: 2,
+    description: "Good",
+    hex: "#6ee077",
+    message:
+      "The air near this park may cause mild respiratory issues and infections for children under 5 years old or with asthma, allergies or heart conditions.",
+  },
+  {
+    index: 3,
+    description: "Moderate",
+    hex: "#ffde21",
+    message:
+      "The air near this park may cause respiratory issues and infections for all children, especially those under 5 with asthma, allergies or heart conditions.",
+  },
+  {
+    index: 4,
+    description: "Poor",
+    hex: "#ff991c",
+    message:
+      "The air near this park is unsafe for all children, especially those under 5 or with asthma, allergies or heart conditions.",
+  },
+  {
+    index: 5,
+    description: "Very poor",
+    hex: "#ff991c",
+    message:
+      "The air near this park is dangerous for all children and can lead to serious health issues.",
+  },
+]);
+
+export const AQI_POLLUTANT_RANGES = {
+  no2: ["0,9.9999", "10,19.9999", "20,24.9999", "25,50.9999", ",51"],
+  o3: ["0,59.9999", "60,99.9999", "100,119.9999", "120,139.9999", ",140"],
+  so2: ["0,19.9999", "20,39.9999", "40,99.9999", "100,199.9999", ",200"],
+  pm10: ["0,14.9999", "15,29.9999", "30,44.9999", "45,74.9999", ",75"],
+  pm25: ["0,4.9999", "5,9.9999", "10,14.9999", "15,24.9999", ",25"],
+};
