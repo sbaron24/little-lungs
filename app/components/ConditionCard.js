@@ -10,7 +10,9 @@ const ConditionCard = ({ condition, isSelected, handleClick }) => {
     >
       <div>
         <h3>{convertUTCTimeStr(condition.dateTime)}</h3>
-        <p>{condition.dominantPollutant.description}</p>
+        <p className={`text-[${condition.dominantPollutant.hex}]`}>
+          {condition.dominantPollutant.description}
+        </p>
       </div>
     </div>
   );

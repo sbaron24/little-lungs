@@ -21,7 +21,7 @@ const ParkRecommendations = ({ park }) => {
         };
       })
     );
-    console.log("aqData: ", aqData);
+
     const sortedParks = aqData.sort((a, b) => {
       return b.airQuality - a.airQuality;
     });

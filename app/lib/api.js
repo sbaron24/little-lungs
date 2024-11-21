@@ -136,12 +136,12 @@ export async function getAllConditionData(latitude, longitude) {
       continue;
     }
 
-    // const convertedApiPollutants = convertPPBtoMicrogramsVolume(
-    //   matchingAirData?.pollutants,
-    //   openTempData.surfacePressure[i]
-    // );
-    // console.log("convertedApiPollutants", convertedApiPollutants);
-    const pollutantLevels = getPollutantLevels(matchingAirData?.pollutants);
+    const convertedApiPollutants = convertPPBtoMicrogramsVolume(
+      matchingAirData?.pollutants,
+      openTempData.surfacePressure[i]
+    );
+
+    const pollutantLevels = getPollutantLevels(convertedApiPollutants);
     let condition = {
       dateTime: openTempData.dateTime[i],
       tempC: openTempData.temperature2m[i],

@@ -17,7 +17,6 @@ export function convertUTCTimeStr(string) {
  * @param {number} surfacePressure
  */
 export function convertPPBtoMicrogramsVolume(pollutants, surfacePressure) {
-  console.log("pre convert pollutants: ", pollutants);
   const adjustedMolarVol = 22.41 * (1013.25 / surfacePressure);
   return pollutants.map((pollutant) => {
     if (pollutant.concentration.units == "PARTS_PER_BILLION") {
@@ -49,21 +48,14 @@ export function getAqiInfo(code, concentration) {
       throw new Error("Pollutant concentration must be a positive number");
     }
     AQI_POLLUTANT_RANGES[code].forEach((range, index) => {
-      let [min, max] = range.split(",").map((m) => parseInt(m));
-      if (code == "pm25") {
-        console.log("concentration", concentration);
-        console.log("here outside");
-      }
+      let [min, max] = range.split(",").map((m) => parseFloat(m));
       if (
         (min === NaN && concentration >= max) ||
         (concentration >= min && concentration <= max)
       ) {
-        if (code == "pm25") {
-          console.log("concentration", concentration);
-          console.log("here inside");
-        }
         result = {
           code,
+          concentration,
           ...AQI_LEVEL_INFO[index],
         };
       }

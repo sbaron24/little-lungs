@@ -15,7 +15,6 @@ const ParkInfo = ({ park }) => {
 
   useEffect(() => {
     getAllConditionData(latitude, longitude).then((response) => {
-      console.log("conditions: ", response);
       setConditionData(response);
     });
   }, [latitude, longitude]);
@@ -75,7 +74,7 @@ const ParkInfo = ({ park }) => {
             : null}
         </div>
       </div>
-      <ParkRecommendations park={park} />
+      {/* <ParkRecommendations park={park} /> */}
     </div>
   );
 };
