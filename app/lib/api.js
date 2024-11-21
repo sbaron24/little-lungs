@@ -16,8 +16,7 @@ export async function postGoogleAqiForecast(
   forecastHoursAhead
 ) {
   const url = "https://airquality.googleapis.com/v1/forecast:lookup";
-
-  const apiKey = process.env.NEXT_PUBLIC_GOOGLE_API_KEY;
+  const apiKey = process.env.GOOGLE_API_KEY;
   const queryUrl = `${url}?key=${apiKey}`;
   const startTime = moment.utc().add(1, "hour").startOf("hour").format();
   const endTime = moment(startTime)
