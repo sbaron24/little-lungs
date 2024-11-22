@@ -6,7 +6,7 @@ const GeneralRecommendation = ({ condition }) => {
       {condition ? (
         <div>
           <strong>
-            <span className={`text-[${condition.dominantPollutant.hex}]`}>
+            <span style={{ color: condition?.dominantPollutant?.hex }}>
               {condition.dominantPollutant.description}{" "}
             </span>
           </strong>

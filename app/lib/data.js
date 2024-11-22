@@ -147,7 +147,7 @@ export const AQI_LEVEL_INFO = Object.freeze([
   {
     index: 5,
     description: "Very poor",
-    hex: "#ff991c",
+    hex: "#FF0000",
     message:
       "The air near this park is dangerous for all children and can lead to serious health issues.",
   },
