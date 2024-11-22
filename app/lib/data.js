@@ -168,3 +168,41 @@ export const AQI_POLLUTANT_RANGES = {
 //   pm10: [],
 //   pm25: [],
 // };
+
+export const closestParks = {
+  "Łazienki Park": [
+    {name: "Agrykola Park", latitude: 52.2187, longitude: 21.0316, distance: 0.45},
+    {name: "Ujazdowski Park", latitude: 52.2229,longitude: 21.0271, distance: 1.01},
+    {name: "Marszałka Edwarda Rydza-Śmigłego Park", latitude: 52.2275, longitude: 21.0283, distance: 1.43},
+    {name: "Morskie Oko Park", latitude: 52.2031, longitude: 21.0273, distance: 1.48},
+    {name: "Promenada Park", latitude: 52.1989, longitude: 21.0436, distance: 1.92},
+  ],
+  "Saxon Garden": [
+    {name: "Krasinski Garden", latitude: 52.2447, longitude: 21.0027, distance: 0.83},
+    {name: "Multimedia Fountain Park", latitude: 52.2542, longitude: 21.0113, distance: 1.57},
+    {name: "Marszałka Edwarda Rydza-Śmigłego Park", latitude: 52.2275, longitude: 21.0283, distance: 1.77},
+    {name: "Ujazdowski Park", latitude: 52.2229,longitude: 21.0271, distance: 2.16},
+    {name: "Praski Park", latitude: 52.2539, longitude: 21.0352, distance: 2.19},
+  ],
+  "Skaryszewski Park": [
+    {name: "Praski Park", latitude: 52.2539, longitude: 21.0352, distance: 1.72},
+    {name: "Marszałka Edwarda Rydza-Śmigłego Park", latitude: 52.2275, longitude: 21.0283, distance: 2.31},
+    {name: "Saxon Garden", latitude: 52.2401, longitude: 21.0123, distance: 2.71},
+    {name: "Ujazdowski Park", latitude: 52.2229,longitude: 21.0271, distance: 2.74},
+    {name: "Agrykola Park", latitude: 52.2187, longitude: 21.0316, distance: 2.97},
+  ],
+  "Ujazdowski Park": [
+    {name: "Marszałka Edwarda Rydza-Śmigłego Park", latitude: 52.2275, longitude: 21.0283, distance: .52},
+    {name: "Agrykola Park", latitude: 52.2187, longitude: 21.0316, distance: 0.56},
+    {name: "Łazienki Park", latitude: 52.2154, longitude: 21.0355, distance: 1.01},
+    {name: "Pole Mokotowskie", latitude: 52.2108, longitude: 21.0039,distance: 2.08},
+    {name: "Saxon Garden", latitude: 52.2401, longitude: 21.0123, distance: 2.16},
+  ],
+  "Multimedia Fountain Park": [
+    {name: "Arkadia Park", latitude: 52.2597, longitude: 21.0022, distance: 0.87},
+    {name: "Krasinski Garden", latitude: 52.2447, longitude: 21.0027, distance: 1.21},
+    {name: "Saxon Garden", latitude: 52.2401, longitude: 21.0123, distance: 1.57},
+    {name: "Praski Park", latitude: 52.2539, longitude: 21.0352, distance: 1.63},
+    {name: "Jordan Park Żoliborz", latitude: 52.2686, longitude: 20.9906, distance: 2.13},
+  ],
+};
