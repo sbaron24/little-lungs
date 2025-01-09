@@ -36,7 +36,7 @@ const ParkInfo = ({ park, selectedAge, selectedHealthCondition }) => {
 
   const AgeRecommendation = ({ selectedAge, condition }) => {
     let message;
-    if (selectedAge == "3-5" && condition?.dominantPollutant.index == 4) {
+    if (selectedAge == "3-5" && condition?.dominantPollutant?.index == 4) {
       message = (
         <div>
           <strong>3-5 years old:</strong>{" "}

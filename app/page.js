@@ -75,6 +75,18 @@ export default function Home() {
   return (
     <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-sans">
       <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start w-full">
+        <p>
+          This is a demo app from the Software for Climate bootcamp, run by{" "}
+          <span style={{ color: "blue" }}>
+            <a href="https://www.terra.do/">Terra.do</a>
+          </span>
+          . The team came together to build a prototype of an application that
+          helps parents in Warsaw, Poland decide which parks (searchable in the
+          search bar below) have the best air quality for their child. Parents
+          can select their child's age, their condition, and receive
+          personalized recomendations from the World Health Organization given
+          their child's information.
+        </p>
         <div className="flex w-full gap-8">
           <div className="w-1/3 border border-dotted rounded">
             <div className="mb-5">
